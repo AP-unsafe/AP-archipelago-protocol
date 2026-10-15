@@ -535,7 +535,7 @@ The first message a \ship{} receives is always \texttt{Welcome}, and it arrives 
 pub struct Welcome {
     pub ship: ShipId,
     /// Every numeric rule of this game.
-    pub params: Vec<Params>,
+    pub params: Params,
     /// The terrain of every cell. Public, and fixed for the whole game.
     pub map: Map,
     /// Seeds the wind. NOT the seed the world was generated from.
