@@ -738,7 +738,7 @@ AdmiraltyToShip::GameOver {
     /// What this Ship is told about the result. A Ship still playing when the
     /// game ends is told everything; one that sank in round twelve cannot be,
     /// because there was nothing to tell yet.
-    outcome: Outcome,
+    outcome: Option<Outcome>,
 }
 
 #[derive(Copy, Clone, PartialEq, Eq, Debug)]
