@@ -1,0 +1,32 @@
+name: Build LaTeX
+
+on: [push, pull_request]
+
+# Cancel superseded runs on the same branch/PR
+concurrency:
+  group: latex-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Set up TeX Live
+        uses: zauguin/install-texlive@v4
+        with:
+          packages: >
+            scheme-basic titling parskip cleveref listings caption xcolor psnfss graphics latexmk
+
+      - name: Compile
+        run: latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error protocol.tex
+
+      - name: Upload PDF
+        uses: actions/upload-artifact@v7
+        with:
+          name: protocol
+          path: protocol.pdf
+          if-no-files-found: error
+          retention-days: 30
