@@ -1,7 +1,7 @@
 name: Report error
 description: Report an error in the file.
 title: "[Error]: "
-labels: ["Error"]
+labels: ["error"]
 type: bug
 body:
     - type: input
