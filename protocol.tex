@@ -293,7 +293,7 @@ impl Map {
     pub fn terrain(&self, cell: Cell) -> Option<Terrain>;
     pub fn is_land(&self, cell: Cell) -> bool;
     pub fn is_water(&self, cell: Cell) -> bool;
-    /// The six corners, in direction order. Ship i starts on corner i.
+    /// The six corners, in direction order (counter-clockwise, East is the first). Ship i starts on corner i.
     pub fn corners(&self) -> [Cell; 6];
     /// Every cell in the sea, in a fixed order. Clear water and rocks.
     pub fn water_cells(&self) -> HashSet<Cell>;
