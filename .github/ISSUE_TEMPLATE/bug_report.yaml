@@ -1,0 +1,52 @@
+name: Report error
+description: File an error in the file.
+title: "[Error]: "
+labels: ["Error"]
+type: bug
+body:
+    - type: input
+      id: gropname
+      attributes:
+          label: Group Name
+          description: Tell us your group name in case we need to get in contact
+          placeholder: ex. UnwrapAndPray
+      validations:
+          required: true
+    - type: input
+      id: filesec
+      attributes:
+          label: File Section
+          description: Specify the section in the PROTOCOL file where the error appears
+          placeholder: ex. 2.4
+      validations:
+          required: true
+    - type: input
+      id: counterpoint
+      attributes:
+          label: Counterpoint
+          description: If present, specify the section in the MAIN file where the error is contraddicted
+          placeholder: ex. 3.4
+      validations:
+          required: false
+    - type: textarea
+      id: describe
+      attributes:
+          label: Describe the error. 
+          description: Tell us, what's wrong. Try to include a direct reference to the text.
+          placeholder: ex. The enum is not exhaustive in "enum E { ... }"
+      validations:
+          required: true
+    - type: textarea
+      id: correction
+      attributes:
+          label: Suggested Correction
+          description: Describe how you would correct this error.
+      validations:
+          required: false
+    - type: upload
+      id: screenshots
+      attributes:
+          label: Upload screenshots
+          description: If applicable, add screenshots to help explain the error or correction.
+      validations:
+          required: false
