@@ -1,5 +1,5 @@
 name: Report error
-description: File an error in the file.
+description: Report an error in the file.
 title: "[Error]: "
 labels: ["Error"]
 type: bug
