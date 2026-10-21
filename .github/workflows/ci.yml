@@ -35,32 +35,32 @@ jobs:
         run: latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error protocol.tex
 
 
-      - name: Push PDF to pdf-result
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+      # - name: Push PDF to pdf-result
+      #   run: |
+      #     git config user.name "github-actions[bot]"
+      #     git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          cp protocol.pdf "$RUNNER_TEMP/protocol.pdf"
+      #     cp protocol.pdf "$RUNNER_TEMP/protocol.pdf"
 
-          if git ls-remote --exit-code --heads origin pdf-result >/dev/null 2>&1; then
-            git fetch origin pdf-result
-            git worktree add /tmp/pdf-result origin/pdf-result
-          else
-            git worktree add --detach /tmp/pdf-result
-            git -C /tmp/pdf-result checkout --orphan pdf-result
-          fi
+      #     if git ls-remote --exit-code --heads origin pdf-result >/dev/null 2>&1; then
+      #       git fetch origin pdf-result
+      #       git worktree add /tmp/pdf-result origin/pdf-result
+      #     else
+      #       git worktree add --detach /tmp/pdf-result
+      #       git -C /tmp/pdf-result checkout --orphan pdf-result
+      #     fi
 
-          cp "$RUNNER_TEMP/protocol.pdf" /tmp/pdf-result/protocol.pdf
+      #     cp "$RUNNER_TEMP/protocol.pdf" /tmp/pdf-result/protocol.pdf
 
-          cd /tmp/pdf-result
-          git add protocol.pdf
+      #     cd /tmp/pdf-result
+      #     git add protocol.pdf
 
-          if ! git diff --cached --quiet; then
-            git commit -m "Update generated protocol PDF"
-            git push origin HEAD:pdf-result
-          else
-            echo "PDF unchanged; no commit needed."
-          fi
+      #     if ! git diff --cached --quiet; then
+      #       git commit -m "Update generated protocol PDF"
+      #       git push origin HEAD:pdf-result
+      #     else
+      #       echo "PDF unchanged; no commit needed."
+      #     fi
 
       - name: Generate release timestamp
         id: timestamp
