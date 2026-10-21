@@ -8,13 +8,12 @@ on:
       - '.github/workflows/ci.yml'
   workflow_dispatch:
 
-# Cancel superseded runs on the same branch/PR
 concurrency:
   group: latex-${{ github.ref }}
   cancel-in-progress: true
 
 permissions:
-    contents: write
+  contents: write
 
 jobs:
   build:
@@ -24,7 +23,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
         with:
-            ref: main
+          ref: main
 
       - name: Set up TeX Live
         uses: zauguin/install-texlive@v4
@@ -35,6 +34,34 @@ jobs:
       - name: Compile
         run: latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error protocol.tex
 
+      - name: Commit PDF to pdf-result branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          # Create an orphan branch if it doesn't exist; otherwise check it out.
+          if git ls-remote --exit-code --heads origin pdf-result >/dev/null 2>&1; then
+            git fetch origin pdf-result
+            git checkout -B pdf-result origin/pdf-result
+          else
+            git checkout --orphan pdf-result
+            git rm -rf . || true
+          fi
+
+          # Copy the generated PDF into the branch root.
+          cp "$GITHUB_WORKSPACE/protocol.pdf" ./protocol.pdf
+
+          git add protocol.pdf
+
+          if ! git diff --cached --quiet; then
+            git commit -m "Update generated protocol PDF"
+            git push origin pdf-result
+          else
+            echo "PDF is unchanged; nothing to commit."
+          fi
+
       - name: Generate release timestamp
         id: timestamp
         run: echo "value=$(date -u +'%d/%m-%H.%M.%S')" >> "$GITHUB_OUTPUT"
@@ -42,11 +69,11 @@ jobs:
       - name: Create release
         uses: softprops/action-gh-release@v3
         with:
-            tag_name: protocol-${{ steps.timestamp.outputs.value }}
-            name: Protocol ${{ steps.timestamp.outputs.value }}
-            body: Automatically generated PDF from the LaTeX GitHub Actions workflow.
-            files: protocol.pdf
-            make_latest: true
+          tag_name: protocol-${{ steps.timestamp.outputs.value }}
+          name: Protocol ${{ steps.timestamp.outputs.value }}
+          body: Automatically generated PDF from the LaTeX GitHub Actions workflow.
+          files: protocol.pdf
+          make_latest: true
 
       - name: Upload PDF
         uses: actions/upload-artifact@v7
