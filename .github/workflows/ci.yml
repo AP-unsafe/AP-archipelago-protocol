@@ -34,32 +34,32 @@ jobs:
       - name: Compile
         run: latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error protocol.tex
 
-      - name: Commit PDF to pdf-result branch
-        env:
-          GH_TOKEN: ${{ github.token }}
+
+      - name: Push PDF to pdf-result
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          # Create an orphan branch if it doesn't exist; otherwise check it out.
+          cp protocol.pdf "$RUNNER_TEMP/protocol.pdf"
+
           if git ls-remote --exit-code --heads origin pdf-result >/dev/null 2>&1; then
             git fetch origin pdf-result
-            git checkout -B pdf-result origin/pdf-result
+            git worktree add /tmp/pdf-result origin/pdf-result
           else
-            git checkout --orphan pdf-result
-            git rm -rf . || true
+            git worktree add --detach /tmp/pdf-result
+            git -C /tmp/pdf-result checkout --orphan pdf-result
           fi
 
-          # Copy the generated PDF into the branch root.
-          cp "$GITHUB_WORKSPACE/protocol.pdf" ./protocol.pdf
+          cp "$RUNNER_TEMP/protocol.pdf" /tmp/pdf-result/protocol.pdf
 
+          cd /tmp/pdf-result
           git add protocol.pdf
 
           if ! git diff --cached --quiet; then
             git commit -m "Update generated protocol PDF"
-            git push origin pdf-result
+            git push origin HEAD:pdf-result
           else
-            echo "PDF is unchanged; nothing to commit."
+            echo "PDF unchanged; no commit needed."
           fi
 
       - name: Generate release timestamp
