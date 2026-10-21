@@ -2,7 +2,6 @@ name: Report error
 description: Report an error in the file.
 title: "[Error]: "
 labels: ["error"]
-type: bug
 body:
     - type: input
       id: gropname
