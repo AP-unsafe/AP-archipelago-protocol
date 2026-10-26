@@ -24,7 +24,6 @@ body:
       attributes:
           label: Describe what should be summarized. 
           description: Tell us what should be removed or added from the text.
-          placeholder: ex. The enum Alpha is not implemented in the protocol.
       validations:
           required: true
     - type: textarea
