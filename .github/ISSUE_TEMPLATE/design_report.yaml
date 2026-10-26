@@ -1,4 +1,4 @@
-name: Create a discussion
+name: Create a discussion about a component design
 description: Open a discussion about the design/implementation of a piece of code.
 title: "[Design]: "
 labels: ["design"]
