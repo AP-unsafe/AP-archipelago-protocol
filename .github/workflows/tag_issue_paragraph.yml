@@ -12,13 +12,14 @@ jobs:
   tag-section:
     runs-on: ubuntu-latest
     steps:
-      - name: Extract section and apply label
+      - name: Extract section and apply labels
         uses: actions/github-script@v7
         with:
           script: |
             const issue = context.payload.issue;
             const body = issue.body || "";
 
+            // Extract the selected section number.
             const match = body.match(/^(\d+(?:\.\d+)?) - .+$/m);
 
             if (!match) {
@@ -27,27 +28,34 @@ jobs:
             }
 
             const section = match[1];
+            const mainSection = section.split(".")[0];
 
-            try {
-              await github.rest.issues.getLabel({
-                ...context.repo,
-                name: section
-              });
-            } catch (error) {
-              if (error.status !== 404) throw error;
+            const labels = [...new Set([section, mainSection])];
 
-              await github.rest.issues.createLabel({
-                ...context.repo,
-                name: section,
-                color: "1D76DB",
-                description: `Documentation section ${section}`
-              });
+            for (const label of labels) {
+              try {
+                await github.rest.issues.getLabel({
+                  ...context.repo,
+                  name: label
+                });
+              } catch (error) {
+                if (error.status !== 404) throw error;
+
+                await github.rest.issues.createLabel({
+                  ...context.repo,
+                  name: label,
+                  color: "1D76DB",
+                  description: `Documentation section ${label}`
+                });
+              }
             }
 
             await github.rest.issues.addLabels({
               ...context.repo,
               issue_number: issue.number,
-              labels: [section]
+              labels
             });
 
-            core.info(`Applied label "${section}" to issue #${issue.number}`);
+            core.info(
+              `Applied labels ${labels.join(", ")} to issue #${issue.number}`
+            );
