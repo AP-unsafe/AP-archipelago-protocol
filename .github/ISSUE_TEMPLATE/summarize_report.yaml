@@ -11,14 +11,57 @@ body:
           placeholder: ex. UnwrapAndPray
       validations:
           required: true
-    - type: input
+    - type: dropdown
       id: filesec
       attributes:
-          label: File Section
-          description: Specify the section in the PROTOCOL file where the paragraph appears.
-          placeholder: ex. 2.4
+        label: File Section
+        description: Specify the section in the PROTOCOL file where the paragraph appears
+        options:
+          - '1 - Shape of the system'
+          - '1.1 - Four message sets'
+          - '2 - Geometry'
+          - '2.1 - Coordinates'
+          - '2.2 - Directions'
+          - '2.3 - Distance and ranges'
+          - '2.4 - The map'
+          - '2.5 - The small types'
+          - '2.6 - Params'
+          - '3 - Line of sight'
+          - '3.1 - The contract'
+          - '3.2 - Drawing the line'
+          - '3.3 - Test vectors'
+          - '4 - Weather'
+          - '5 - Starting a game'
+          - '5.1 - There is no handshake'
+          - '5.2 - Welcome'
+          - '6 - Clues'
+          - '6.1 - The type'
+          - '6.2 - Why it looks like this'
+          - '6.3 - What a SHIP does with them'
+          - '7 - Rounds'
+          - '7.1 - The exchange'
+          - '7.2 - The order of business'
+          - '7.3 - Two modes, one SHIP'
+          - '7.4 - Conflicts'
+          - "8 - The Chart's interface"
+          - '8.1 - Why validate and apply are two functions'
+          - '8.2 - What the ADMIRALTY may rely on'
+          - '9 - Messages between Ships'
+          - '9.1 - How they travel'
+          - '9.2 - Why it is relayed and not direct'
+          - '9.3 - The two rules'
+          - '9.4 - What this is for'
+          - '10 - The Cartographer'
+          - '10.1 - Watching'
+          - '10.2 - Controlling'
+          - '11 - Errors and hostile input'
+          - '11.1 - Rejections'
+          - '11.2 - Hostile input'
+          - '12 - Logging'
+          - '13 - What the Working Group (WG) must settle'
+        default: 0
       validations:
-          required: true
+        required: true
     - type: textarea
       id: describe
       attributes:

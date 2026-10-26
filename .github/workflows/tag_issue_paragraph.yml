@@ -1,0 +1,53 @@
+
+name: Tag issue by section
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  issues: write
+
+jobs:
+  tag-section:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Extract section and apply label
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issue = context.payload.issue;
+            const body = issue.body || "";
+
+            const match = body.match(/^(\d+(?:\.\d+)?) - .+$/m);
+
+            if (!match) {
+              core.info("No section number found. Skipping.");
+              return;
+            }
+
+            const section = match[1];
+
+            try {
+              await github.rest.issues.getLabel({
+                ...context.repo,
+                name: section
+              });
+            } catch (error) {
+              if (error.status !== 404) throw error;
+
+              await github.rest.issues.createLabel({
+                ...context.repo,
+                name: section,
+                color: "1D76DB",
+                description: `Documentation section ${section}`
+              });
+            }
+
+            await github.rest.issues.addLabels({
+              ...context.repo,
+              issue_number: issue.number,
+              labels: [section]
+            });
+
+            core.info(`Applied label "${section}" to issue #${issue.number}`);
