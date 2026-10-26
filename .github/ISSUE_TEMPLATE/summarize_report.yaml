@@ -1,0 +1,43 @@
+name: Summarize a paragraph
+description: Open a discussion about summarizing a paragraph in the file.
+title: "[Summarize]: "
+labels: ["summarize"]
+body:
+    - type: input
+      id: gropname
+      attributes:
+          label: Group Name
+          description: Tell us your group name in case we need to get in contact
+          placeholder: ex. UnwrapAndPray
+      validations:
+          required: true
+    - type: input
+      id: filesec
+      attributes:
+          label: File Section
+          description: Specify the section in the PROTOCOL file where the paragraph appears.
+          placeholder: ex. 2.4
+      validations:
+          required: true
+    - type: textarea
+      id: describe
+      attributes:
+          label: Describe what should be summarized. 
+          description: Tell us what should be removed or added from the text.
+          placeholder: ex. The enum Alpha is not implemented in the protocol.
+      validations:
+          required: true
+    - type: textarea
+      id: correction
+      attributes:
+          label: Suggested Correction
+          description: Describe how you would summarize this paragraph.
+      validations:
+          required: false
+    - type: upload
+      id: screenshots
+      attributes:
+          label: Upload screenshots
+          description: If applicable, add screenshots to help explain the error or correction.
+      validations:
+          required: false
