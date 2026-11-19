@@ -800,7 +800,7 @@ groups must agree on as any message, and the reason it is in this document rathe
 inside whoever wrote the \chart.
 
 \begin{lstlisting}
-impl Chart {
+pub trait Chart {
     pub fn generate(seed: Seed, params: &Params) -> Result<Chart, GenError>;
 
     /// Decide whether an action is legal. The only way to obtain a ValidatedAction.
