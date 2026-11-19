@@ -801,25 +801,27 @@ inside whoever wrote the \chart.
 
 \begin{lstlisting}
 pub trait Chart {
-    pub fn generate(seed: Seed, params: &Params) -> Result<Chart, GenError>;
+    fn generate(seed: Seed, params: &Params) -> Result<Self, GenError>
+    where 
+      Self: Sized;
 
     /// Decide whether an action is legal. The only way to obtain a ValidatedAction.
-    pub fn validate(&self, ship: ShipId, action: &Action)
+    fn validate(&self, ship: ShipId, action: &Action)
         -> Result<ValidatedAction, Rejection>;
 
     /// Apply an already validated action. Cannot fail.
-    pub fn apply(&mut self, action: ValidatedAction) -> Vec<Event>;
+    fn apply(&mut self, action: ValidatedAction) -> Vec<Event>;
 
     /// End of round: the round number advances and the Islands take their turn.
-    pub fn advance_round(&mut self) -> Vec<Event>;
+    fn advance_round(&mut self) -> Vec<Event>;
 
     /// What a Ship is permitted to see.
-    pub fn view_for(&self, ship: ShipId) -> ShipView;
+    fn view_for(&self, ship: ShipId) -> ShipView;
 
     /// What a spectator sees: everything.
-    pub fn spectator_view(&self) -> SpectatorView;
+    fn spectator_view(&self) -> SpectatorView;
 
-    pub fn outcome(&self) -> Option<Outcome>;
+    fn outcome(&self) -> Option<Outcome>;
 }
 \end{lstlisting}
 
