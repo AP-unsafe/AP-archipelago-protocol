@@ -1155,4 +1155,17 @@ states a \ship{} can be in --- sailing, moored, sunk --- and look for the transi
 named. The problems worth finding are almost never in a single message; they are in two features
 that were each specified alone.
 
+\newpage
+\section{WG choices}
+\label{proto:wgchoices}
+
+The choices of the \WG{} that do not have a section of their own.
+
+\subsection{Channel library}
+\label{proto:channels}
+
+Every component uses the channels of \texttt{crossbeam-channel}
+(\url{https://docs.rs/crossbeam-channel/}) and is written with threads. No asynchronous runtime
+is used.
+
 \end{document}
