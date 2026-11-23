@@ -800,10 +800,8 @@ groups must agree on as any message, and the reason it is in this document rathe
 inside whoever wrote the \chart.
 
 \begin{lstlisting}
-pub trait Chart {
-    fn generate(seed: Seed, params: &Params) -> Result<Self, GenError>
-    where 
-      Self: Sized;
+pub trait Chart: Sized {
+    fn generate(seed: Seed, params: &Params) -> Result<Self, GenError>;
 
     /// Decide whether an action is legal. The only way to obtain a ValidatedAction.
     fn validate(&self, ship: ShipId, action: &Action)
