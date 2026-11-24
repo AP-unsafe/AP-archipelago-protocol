@@ -438,8 +438,8 @@ pub fn wind_at(weather_seed: Seed, round: Round) -> Direction;
 \end{lstlisting}
 
 This allows a \ship{} to compute future rounds directly with no accumulated state to drift.
-The returned \texttt{Direction} indicates where the wind blows from, shutting the course whose
-relative angle to it is $0$ (opposite to the wind).
+The returned \texttt{Direction} indicates where the wind blows towards, shutting the course whose
+relative angle to it is $3$ (opposite to the wind).
 
 Across consecutive rounds, the wind turns by at most
 one step---never reversing---and covers all six values every sixty rounds. To prevent a \ship{}
