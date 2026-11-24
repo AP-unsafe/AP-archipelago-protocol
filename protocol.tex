@@ -269,22 +269,22 @@ pub enum Terrain {
 }
 
 /// The terrain of every cell, and nothing else. Public and fixed for the game.
-pub struct Map { /* ... */ }
-
-impl Map {
-    pub fn radius(&self) -> u32;
-    pub fn contains(&self, cell: Cell) -> bool;
-    pub fn terrain(&self, cell: Cell) -> Option<Terrain>;
-    pub fn is_land(&self, cell: Cell) -> bool;
-    pub fn is_water(&self, cell: Cell) -> bool;
+pub trait Map {
+    fn radius(&self) -> u32;
+    fn contains(&self, cell: Cell) -> bool;
+    fn terrain(&self, cell: Cell) -> Option<Terrain>;
+    fn is_land(&self, cell: Cell) -> bool;
+    fn is_water(&self, cell: Cell) -> bool;
     /// The six corners, in direction order (counter-clockwise, East is the first). Ship i starts on corner i.
-    pub fn corners(&self) -> [Cell; 6];
+    fn corners(&self) -> [Cell; 6];
     /// Every cell in the sea, in a fixed order. Clear water and rocks.
-    pub fn water_cells(&self) -> impl Iterator<Item = Cell> + '_;
+    fn water_cells(&self) -> impl Iterator<Item = Cell> + '_;
     /// Water that is not a rock.
-    pub fn clear_cells(&self) -> impl Iterator<Item = Cell> + '_;
+    fn clear_cells(&self) -> impl Iterator<Item = Cell> + '_;
 }
 \end{lstlisting}
+
+The implementors of the \textbf{Map} trait need to guarantee that all the methods that return an \texttt{Iterator} have a deterministic iteration order (see the \MD{} on determinism).
 
 \textbf{Land} (\texttt{Island}, \texttt{Cliff}) cannot be entered and blocks sight; \textbf{water} (\texttt{Clear}, \texttt{Rock}) can be entered and does not. A rock differs from clear water only in the cost of entering it.
 
